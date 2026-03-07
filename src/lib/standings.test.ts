@@ -5,6 +5,7 @@ import type { Tournament } from './types';
 function makeTournament(overrides: Partial<Tournament> = {}): Tournament {
 	return {
 		format: 'swiss',
+		bestOf: 3,
 		players: [
 			{ id: '1', name: 'Alice' },
 			{ id: '2', name: 'Bob' },

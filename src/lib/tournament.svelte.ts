@@ -1,4 +1,4 @@
-import type { Tournament, TournamentFormat, Player } from './types';
+import type { Tournament, TournamentFormat, BestOf, Player } from './types';
 import { generateSwissPairings, getSwissRoundCount } from './pairings';
 import { generateRoundRobinSchedule, getRoundRobinRoundCount } from './round-robin';
 import { calculateStandings } from './standings';
@@ -38,13 +38,14 @@ export function createTournamentState() {
 		if (tournament) saveTournament(tournament);
 	}
 
-	function startTournament(format: TournamentFormat, playerNames: string[]) {
+	function startTournament(format: TournamentFormat, playerNames: string[], bestOf: BestOf = 3) {
 		const players: Player[] = playerNames.map(name => ({ id: createId(), name }));
 
 		if (format === 'round-robin') {
 			const allRounds = generateRoundRobinSchedule(players);
 			tournament = {
 				format,
+				bestOf,
 				players,
 				rounds: allRounds,
 				currentRound: 1,
@@ -53,6 +54,7 @@ export function createTournamentState() {
 		} else {
 			const firstRound = generateSwissPairings({
 				format,
+				bestOf,
 				players,
 				rounds: [],
 				currentRound: 0,
@@ -60,6 +62,7 @@ export function createTournamentState() {
 			});
 			tournament = {
 				format,
+				bestOf,
 				players,
 				rounds: [firstRound],
 				currentRound: 1,

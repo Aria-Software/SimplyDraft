@@ -49,6 +49,7 @@
 						roundNumber={tournament.tournament.currentRound}
 						totalRounds={tournament.totalRounds}
 						players={tournament.tournament.players}
+						bestOf={tournament.tournament.bestOf}
 						allMatchesComplete={tournament.allMatchesComplete}
 						onSubmitScore={tournament.submitScore}
 						onNextRound={tournament.nextRound}

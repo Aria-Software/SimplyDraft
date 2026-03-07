@@ -18,8 +18,11 @@ export interface Round {
 	byePlayerId?: string;
 }
 
+export type BestOf = 1 | 3;
+
 export interface Tournament {
 	format: TournamentFormat;
+	bestOf: BestOf;
 	players: Player[];
 	rounds: Round[];
 	currentRound: number;

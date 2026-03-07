@@ -1,19 +1,22 @@
 <script lang="ts">
-	import type { Match, Player } from '$lib/types';
+	import type { Match, Player, BestOf } from '$lib/types';
 
 	interface Props {
 		match: Match;
 		players: Player[];
 		matchIndex: number;
+		bestOf: BestOf;
 		onSubmitScore: (matchIndex: number, score1: number, score2: number) => void;
 	}
 
-	let { match, players, matchIndex, onSubmitScore }: Props = $props();
+	let { match, players, matchIndex, bestOf, onSubmitScore }: Props = $props();
 
 	let player1 = $derived(players.find(p => p.id === match.player1Id)!);
 	let player2 = $derived(players.find(p => p.id === match.player2Id)!);
 
-	const scoreOptions: [number, number][] = [[2, 0], [2, 1], [1, 2], [0, 2]];
+	const bo3Options: [number, number][] = [[2, 0], [2, 1], [1, 2], [0, 2]];
+	const bo1Options: [number, number][] = [[1, 0], [0, 1]];
+	let scoreOptions = $derived(bestOf === 1 ? bo1Options : bo3Options);
 </script>
 
 <div class="border border-gray-200 rounded-lg p-4">

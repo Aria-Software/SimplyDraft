@@ -46,10 +46,11 @@ export function calculateStandings(tournament: Tournament): Standing[] {
 
 		if (round.byePlayerId) {
 			const byeId = round.byePlayerId;
+			const byeGames = tournament.bestOf === 1 ? 1 : 2;
 			playerMatchPoints.set(byeId, (playerMatchPoints.get(byeId) ?? 0) + 3);
 			playerMatchesPlayed.set(byeId, (playerMatchesPlayed.get(byeId) ?? 0) + 1);
-			playerGamesWon.set(byeId, (playerGamesWon.get(byeId) ?? 0) + 2);
-			playerGamesPlayed.set(byeId, (playerGamesPlayed.get(byeId) ?? 0) + 2);
+			playerGamesWon.set(byeId, (playerGamesWon.get(byeId) ?? 0) + byeGames);
+			playerGamesPlayed.set(byeId, (playerGamesPlayed.get(byeId) ?? 0) + byeGames);
 		}
 	}
 

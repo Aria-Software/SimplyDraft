@@ -19,7 +19,7 @@ describe('getSwissRoundCount', () => {
 describe('generateSwissPairings', () => {
 	test('4 players round 1: 2 matches, no bye', () => {
 		const t: Tournament = {
-			format: 'swiss', players: makePlayers(4), rounds: [], currentRound: 0, completed: false
+			format: 'swiss', bestOf: 3, players: makePlayers(4), rounds: [], currentRound: 0, completed: false
 		};
 		const round = generateSwissPairings(t);
 		expect(round.matches).toHaveLength(2);
@@ -28,7 +28,7 @@ describe('generateSwissPairings', () => {
 
 	test('5 players: 2 matches + 1 bye', () => {
 		const t: Tournament = {
-			format: 'swiss', players: makePlayers(5), rounds: [], currentRound: 0, completed: false
+			format: 'swiss', bestOf: 3, players: makePlayers(5), rounds: [], currentRound: 0, completed: false
 		};
 		const round = generateSwissPairings(t);
 		expect(round.matches).toHaveLength(2);
@@ -38,6 +38,7 @@ describe('generateSwissPairings', () => {
 	test('bye goes to lowest standing player who hasnt had bye', () => {
 		const t: Tournament = {
 			format: 'swiss',
+			bestOf: 3,
 			players: makePlayers(5),
 			rounds: [{
 				matches: [
@@ -56,6 +57,7 @@ describe('generateSwissPairings', () => {
 	test('no rematches when possible', () => {
 		const t: Tournament = {
 			format: 'swiss',
+			bestOf: 3,
 			players: makePlayers(4),
 			rounds: [{
 				matches: [

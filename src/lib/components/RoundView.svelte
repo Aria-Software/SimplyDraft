@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Round, Player } from '$lib/types';
+	import type { Round, Player, BestOf } from '$lib/types';
 	import MatchCard from './MatchCard.svelte';
 
 	interface Props {
@@ -7,13 +7,14 @@
 		roundNumber: number;
 		totalRounds: number;
 		players: Player[];
+		bestOf: BestOf;
 		allMatchesComplete: boolean;
 		onSubmitScore: (matchIndex: number, score1: number, score2: number) => void;
 		onNextRound: () => void;
 		tournamentCompleted: boolean;
 	}
 
-	let { round, roundNumber, totalRounds, players, allMatchesComplete, onSubmitScore, onNextRound, tournamentCompleted }: Props = $props();
+	let { round, roundNumber, totalRounds, players, bestOf, allMatchesComplete, onSubmitScore, onNextRound, tournamentCompleted }: Props = $props();
 
 	let byePlayer = $derived(
 		round.byePlayerId ? players.find(p => p.id === round.byePlayerId) : null
@@ -25,13 +26,13 @@
 
 	{#if byePlayer}
 		<div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-center text-sm">
-			<span class="font-medium">{byePlayer.name}</span> has a bye (2-0 win)
+			<span class="font-medium">{byePlayer.name}</span> has a bye ({bestOf === 1 ? '1-0' : '2-0'} win)
 		</div>
 	{/if}
 
 	<div class="space-y-3">
 		{#each round.matches as match, i}
-			<MatchCard {match} {players} matchIndex={i} {onSubmitScore} />
+			<MatchCard {match} {players} matchIndex={i} {bestOf} {onSubmitScore} />
 		{/each}
 	</div>
 
