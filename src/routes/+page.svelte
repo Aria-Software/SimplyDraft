@@ -73,4 +73,9 @@
 			</div>
 		{/if}
 	</div>
+
+	<footer class="text-center text-xs text-gray-400 py-4">
+		Made by <a href="https://github.com/Aria-Software" class="hover:text-gray-600">Aria Farmani</a> &middot;
+		<a href="https://github.com/Aria-Software/SimplyDraft" class="hover:text-gray-600">GitHub</a>
+	</footer>
 </div>
