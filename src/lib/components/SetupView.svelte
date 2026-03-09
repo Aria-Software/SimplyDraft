@@ -26,7 +26,10 @@
 	});
 
 	$effect(() => {
-		if (playerCount < minPlayers) playerCount = minPlayers;
+		const options = playerOptions;
+		if (!options.includes(playerCount)) {
+			playerCount = options[0];
+		}
 	});
 
 	let playersPerTable = $derived.by(() => {
