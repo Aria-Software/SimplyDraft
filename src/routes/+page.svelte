@@ -31,7 +31,7 @@
 
 <div class="min-h-screen bg-gray-50 flex flex-col">
 	<div class="max-w-2xl mx-auto px-4 py-8 flex-1">
-		{#if !tournament.tournament}
+		{#if !tournament.tournament && !tournament.event}
 			<SetupView onStart={tournament.startTournament} />
 		{:else}
 			<div class="space-y-4">
@@ -42,6 +42,22 @@
 						class="text-sm text-red-500 hover:text-red-700"
 					>New Tournament</button>
 				</div>
+
+				{#if tournament.isMultiTable && tournament.event}
+					<div class="flex gap-2">
+						{#each tournament.event.tables as table, i}
+							<button
+								class="flex-1 py-2 px-3 rounded-lg border-2 text-sm font-medium transition-colors {tournament.activeTableIndex === i ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 hover:border-gray-300'}"
+								onclick={() => tournament.setActiveTable(i)}
+							>
+								{table.name}
+								{#if table.tournament.completed}
+									<span class="text-green-500 ml-1">&#10003;</span>
+								{/if}
+							</button>
+						{/each}
+					</div>
+				{/if}
 
 				<div class="flex gap-2 border-b border-gray-200">
 					<button
@@ -54,7 +70,7 @@
 					>Standings</button>
 				</div>
 
-				{#if activeTab === 'round' && tournament.currentRoundData}
+				{#if activeTab === 'round' && tournament.currentRoundData && tournament.tournament}
 					<RoundView
 						round={tournament.currentRoundData}
 						roundNumber={tournament.tournament.currentRound}
@@ -72,16 +88,20 @@
 				{#if activeTab === 'standings'}
 					<StandingsView
 						standings={tournament.standings}
-						tournamentCompleted={tournament.tournament.completed}
+						tournamentCompleted={tournament.tournament?.completed ?? false}
 					/>
 				{/if}
 
-				{#if tournament.tournament.completed}
+				{#if tournament.isMultiTable && tournament.allTablesComplete}
+					<div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+						<p class="text-green-800 font-bold text-lg">All Tables Complete!</p>
+					</div>
+				{:else if !tournament.isMultiTable && tournament.tournament?.completed}
 					<div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
 						<p class="text-green-800 font-bold text-lg">Tournament Complete!</p>
 						{#if winners.length === 1}
 							<p class="text-green-600">Winner: {winners[0].player.name}</p>
-						{:else}
+						{:else if winners.length > 1}
 							<p class="text-green-600">Tied: {winners.map(w => w.player.name).join(', ')}</p>
 						{/if}
 					</div>
