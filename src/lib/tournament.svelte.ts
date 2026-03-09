@@ -30,15 +30,10 @@ export function createTournamentState() {
 	);
 
 	const nextRoundPreview = $derived.by((): Round | null => {
-		if (!tournament || !allMatchesComplete || tournament.completed) return null;
+		if (!tournament || tournament.completed) return null;
+		if (tournament.format !== 'round-robin') return null;
 		if (tournament.currentRound >= totalRounds) return null;
-
-		if (tournament.format === 'round-robin') {
-			return tournament.rounds[tournament.currentRound] ?? null;
-		}
-
-		// Swiss: generate preview pairings based on current state
-		return generateSwissPairings(tournament);
+		return tournament.rounds[tournament.currentRound] ?? null;
 	});
 
 	function init() {

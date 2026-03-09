@@ -41,27 +41,27 @@
 		{/each}
 	</div>
 
-	{#if allMatchesComplete && !tournamentCompleted}
-		{#if nextRoundPreview}
-			<div class="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
-				<h3 class="font-semibold text-blue-800 text-center text-sm">Next Round Preview</h3>
-				{#if nextRoundPreview.byePlayerId}
-					<p class="text-xs text-blue-600 text-center">
-						<span class="font-medium">{playerName(nextRoundPreview.byePlayerId)}</span> has a bye
-					</p>
-				{/if}
-				<div class="space-y-1">
-					{#each nextRoundPreview.matches as match}
-						<div class="flex items-center justify-center gap-2 text-sm text-blue-700">
-							<span class="font-medium">{playerName(match.player1Id)}</span>
-							<span class="text-blue-400">vs</span>
-							<span class="font-medium">{playerName(match.player2Id)}</span>
-						</div>
-					{/each}
-				</div>
+	{#if nextRoundPreview}
+		<div class="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
+			<h3 class="font-semibold text-blue-800 text-center text-sm">Next Round</h3>
+			{#if nextRoundPreview.byePlayerId}
+				<p class="text-xs text-blue-600 text-center">
+					<span class="font-medium">{playerName(nextRoundPreview.byePlayerId)}</span> has a bye
+				</p>
+			{/if}
+			<div class="space-y-1">
+				{#each nextRoundPreview.matches as match}
+					<div class="flex items-center justify-center gap-2 text-sm text-blue-700">
+						<span class="font-medium">{playerName(match.player1Id)}</span>
+						<span class="text-blue-400">vs</span>
+						<span class="font-medium">{playerName(match.player2Id)}</span>
+					</div>
+				{/each}
 			</div>
-		{/if}
+		</div>
+	{/if}
 
+	{#if allMatchesComplete && !tournamentCompleted}
 		<button
 			onclick={onNextRound}
 			class="w-full py-3 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
