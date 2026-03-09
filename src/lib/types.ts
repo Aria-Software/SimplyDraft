@@ -38,3 +38,15 @@ export interface Standing {
 	omwPct: number;
 	ogwPct: number;
 }
+
+export interface Table {
+	id: string;
+	name: string;
+	tournament: Tournament;
+}
+
+export interface MultiTableEvent {
+	tables: Table[];
+	format: TournamentFormat;
+	bestOf: BestOf;
+}
