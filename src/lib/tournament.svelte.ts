@@ -1,4 +1,4 @@
-import type { Tournament, TournamentFormat, BestOf, Player } from './types';
+import type { Tournament, TournamentFormat, BestOf, Player, Round } from './types';
 import { generateSwissPairings, getSwissRoundCount } from './pairings';
 import { generateRoundRobinSchedule, getRoundRobinRoundCount } from './round-robin';
 import { calculateStandings } from './standings';
@@ -28,6 +28,18 @@ export function createTournamentState() {
 	const allMatchesComplete = $derived(
 		currentRoundData ? currentRoundData.matches.every(m => m.completed) : false
 	);
+
+	const nextRoundPreview = $derived.by((): Round | null => {
+		if (!tournament || !allMatchesComplete || tournament.completed) return null;
+		if (tournament.currentRound >= totalRounds) return null;
+
+		if (tournament.format === 'round-robin') {
+			return tournament.rounds[tournament.currentRound] ?? null;
+		}
+
+		// Swiss: generate preview pairings based on current state
+		return generateSwissPairings(tournament);
+	});
 
 	function init() {
 		const saved = loadTournament();
@@ -114,6 +126,7 @@ export function createTournamentState() {
 		get totalRounds() { return totalRounds; },
 		get currentRoundData() { return currentRoundData; },
 		get allMatchesComplete() { return allMatchesComplete; },
+		get nextRoundPreview() { return nextRoundPreview; },
 		init,
 		startTournament,
 		submitScore,

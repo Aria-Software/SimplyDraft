@@ -11,6 +11,16 @@
 	function pct(value: number): string {
 		return (value * 100).toFixed(1) + '%';
 	}
+
+	function isWinner(index: number): boolean {
+		if (!tournamentCompleted || standings.length === 0) return false;
+		const first = standings[0];
+		const s = standings[index];
+		return s.matchPoints === first.matchPoints
+			&& s.omwPct === first.omwPct
+			&& s.gameWinPct === first.gameWinPct
+			&& s.ogwPct === first.ogwPct;
+	}
 </script>
 
 <div class="space-y-4">
@@ -32,7 +42,7 @@
 			</thead>
 			<tbody>
 				{#each standings as standing, i}
-					<tr class="border-b border-gray-100 {i === 0 && tournamentCompleted ? 'bg-yellow-50 font-bold' : ''}">
+					<tr class="border-b border-gray-100 {isWinner(i) ? 'bg-yellow-50 font-bold' : ''}">
 						<td class="py-2 px-2">{i + 1}</td>
 						<td class="py-2 px-2">{standing.player.name}</td>
 						<td class="text-center py-2 px-2">{standing.matchPoints}</td>

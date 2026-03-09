@@ -12,6 +12,17 @@
 	onMount(() => {
 		tournament.init();
 	});
+
+	const winners = $derived.by(() => {
+		if (!tournament.tournament?.completed || tournament.standings.length === 0) return [];
+		const first = tournament.standings[0];
+		return tournament.standings.filter(s =>
+			s.matchPoints === first.matchPoints
+			&& s.omwPct === first.omwPct
+			&& s.gameWinPct === first.gameWinPct
+			&& s.ogwPct === first.ogwPct
+		);
+	});
 </script>
 
 <svelte:head>
@@ -54,6 +65,7 @@
 						onSubmitScore={tournament.submitScore}
 						onNextRound={tournament.nextRound}
 						tournamentCompleted={tournament.tournament.completed}
+						nextRoundPreview={tournament.nextRoundPreview}
 					/>
 				{/if}
 
@@ -67,7 +79,11 @@
 				{#if tournament.tournament.completed}
 					<div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
 						<p class="text-green-800 font-bold text-lg">Tournament Complete!</p>
-						<p class="text-green-600">Winner: {tournament.standings[0]?.player.name}</p>
+						{#if winners.length === 1}
+							<p class="text-green-600">Winner: {winners[0].player.name}</p>
+						{:else}
+							<p class="text-green-600">Tied: {winners.map(w => w.player.name).join(', ')}</p>
+						{/if}
 					</div>
 				{/if}
 			</div>
